@@ -56,10 +56,10 @@ python phrasepass_generator.py --entropy
 
 Les dictionnaires se trouvent dans le dossier `dictionaries/` :
 
-- `fr.txt` : Mots français
-- `en.txt` : Mots anglais
+- `fr.txt` : 336 054 mots français (≥ 4 lettres)
+- `en.txt` : 367 522 mots anglais (≥ 4 lettres)
 
-**Important** : Pour une sécurité optimale, utilisez des dictionnaires contenant au moins 1000-7000 mots.
+Les mots de moins de 4 lettres ont été filtrés pour améliorer la sécurité et la lisibilité.
 
 ### Format des dictionnaires
 
@@ -75,7 +75,19 @@ livre
 ## Sécurité
 
 - Utilise le module `secrets` de Python pour une génération cryptographiquement sécurisée
-- L'entropie dépend de la taille du dictionnaire :
-  - 1000 mots, 4 mots = ~40 bits
-  - 7776 mots (diceware), 4 mots = ~51 bits
-  - 7776 mots, 6 mots = ~77 bits
+- **Entropie avec les dictionnaires actuels :**
+  
+  **Français (336 054 mots) :**
+  - 4 mots = **73.43 bits** ✓ Excellent
+  - 5 mots = **91.79 bits** ✓ Très sûr
+  - 6 mots = **110.15 bits** ✓ Extrêmement sûr
+  
+  **Anglais (367 522 mots) :**
+  - 4 mots = **73.95 bits** ✓ Excellent
+  - 5 mots = **92.44 bits** ✓ Très sûr
+  - 6 mots = **110.93 bits** ✓ Extrêmement sûr
+
+- **Recommandations :**
+  - Minimum 50 bits pour usage personnel
+  - 70+ bits recommandé pour comptes sensibles
+  - 100+ bits pour données hautement confidentielles
