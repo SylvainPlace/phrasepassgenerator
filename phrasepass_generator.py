@@ -31,11 +31,13 @@ class PhrasePassGenerator:
         
         return all_words
     
-    def generate(self, word_count=4, separator='-'):
+    def generate(self, word_count=4, separator='-', capitalize=False):
         if word_count < 1:
             raise ValueError("Word count must be at least 1")
         
         selected_words = [secrets.choice(self.words) for _ in range(word_count)]
+        if capitalize:
+            selected_words = [word.capitalize() for word in selected_words]
         return separator.join(selected_words)
     
     def get_entropy(self, word_count):
@@ -78,6 +80,11 @@ def main():
         action='store_true',
         help='Show entropy information'
     )
+    parser.add_argument(
+        '-C', '--capitalize',
+        action='store_true',
+        help='Capitalize the first letter of each word'
+    )
     
     args = parser.parse_args()
     
@@ -100,7 +107,8 @@ def main():
         for _ in range(args.count):
             passphrase = generator.generate(
                 word_count=args.words,
-                separator=args.separator
+                separator=args.separator,
+                capitalize=args.capitalize
             )
             print(passphrase)
     

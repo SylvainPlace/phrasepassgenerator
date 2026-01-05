@@ -37,6 +37,7 @@ Génère une phrase de 4 mots en français séparés par des tirets.
 | `-w, --words` | Nombre de mots | 4 |
 | `-s, --separator` | Séparateur entre les mots (utiliser `-s ""` ou `-s` pour aucun séparateur) | - |
 | `-c, --count` | Nombre de phrases à générer | 1 |
+| `-C, --capitalize` | Mettre une majuscule au début de chaque mot | False |
 | `--entropy` | Afficher les informations d'entropie | False |
 
 ### Exemples
@@ -53,6 +54,9 @@ python phrasepass_generator.py -l fr,en -w 6
 
 # Sans séparateur
 python phrasepass_generator.py -l fr -w 4 -s
+
+# Avec majuscules au début de chaque mot
+python phrasepass_generator.py -l fr -w 5 -C
 
 # Afficher l'entropie avec les deux langues
 python phrasepass_generator.py -l fr,en --entropy
