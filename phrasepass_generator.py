@@ -59,15 +59,13 @@ def main():
     parser.add_argument(
         '-w', '--words',
         type=int,
-        default=4,
-        help='Number of words in passphrase (default: 4)'
+        default=3,
+        help='Number of words in passphrase (default: 3)'
     )
     parser.add_argument(
         '-s', '--separator',
-        default='-',
-        nargs='?',
-        const='',
-        help='Separator between words (default: -). Use -s without value for no separator'
+        default='',
+        help='Separator between words (default: none)'
     )
     parser.add_argument(
         '-c', '--count',
@@ -83,7 +81,14 @@ def main():
     parser.add_argument(
         '-C', '--capitalize',
         action='store_true',
-        help='Capitalize the first letter of each word'
+        default=True,
+        help='Capitalize the first letter of each word (default: True). Use --no-capitalize to disable'
+    )
+    parser.add_argument(
+        '--no-capitalize',
+        dest='capitalize',
+        action='store_false',
+        help='Disable capitalization'
     )
     
     args = parser.parse_args()

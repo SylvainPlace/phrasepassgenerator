@@ -27,24 +27,30 @@ cd phrasepassgenerator
 python phrasepass_generator.py
 ```
 
-Génère une phrase de 4 mots en français séparés par des tirets.
+Génère une phrase de 3 mots en français avec majuscules et sans séparateur (ex: `ChevalMontagneLivre`).
 
 ### Options disponibles
 
 | Option | Description | Défaut |
 | -------- | ------------- | -------- |
 | `-l, --language` | Langue(s) du dictionnaire : `fr`, `en`, ou `fr,en` pour mélanger | fr |
-| `-w, --words` | Nombre de mots | 4 |
-| `-s, --separator` | Séparateur entre les mots (utiliser `-s ""` ou `-s` pour aucun séparateur) | - |
+| `-w, --words` | Nombre de mots | 3 |
+| `-s, --separator` | Séparateur entre les mots (ex: `-s "-"` pour tirets, `-s " "` pour espaces) | (vide) |
 | `-c, --count` | Nombre de phrases à générer | 1 |
-| `-C, --capitalize` | Mettre une majuscule au début de chaque mot | False |
+| `-C, --capitalize` | Mettre une majuscule au début de chaque mot | True |
+| `--no-capitalize` | Désactiver les majuscules | - |
 | `--entropy` | Afficher les informations d'entropie | False |
 
 ### Exemples
 
 ```bash
-# Générer une phrase de 5 mots en français
-python phrasepass_generator.py -l fr -w 5
+# Générer une phrase par défaut (3 mots, majuscules, sans séparateur)
+python phrasepass_generator.py
+# Résultat : ChevalMontagneLivre
+
+# Générer avec des tirets comme séparateur
+python phrasepass_generator.py -l fr -w 5 -s "-"
+# Résultat : Cheval-Montagne-Livre-Fenetre-Soleil
 
 # Générer 3 phrases en anglais avec des espaces
 python phrasepass_generator.py -l en -w 4 -s " " -c 3
@@ -52,11 +58,9 @@ python phrasepass_generator.py -l en -w 4 -s " " -c 3
 # Mélanger français et anglais pour plus d'entropie
 python phrasepass_generator.py -l fr,en -w 6
 
-# Sans séparateur
-python phrasepass_generator.py -l fr -w 4 -s
-
-# Avec majuscules au début de chaque mot
-python phrasepass_generator.py -l fr -w 5 -C
+# Sans majuscules (minuscules uniquement)
+python phrasepass_generator.py -l fr -w 4 --no-capitalize -s "-"
+# Résultat : cheval-montagne-livre-fenetre
 
 # Afficher l'entropie avec les deux langues
 python phrasepass_generator.py -l fr,en --entropy
@@ -88,16 +92,19 @@ livre
 - **Entropie avec les dictionnaires actuels :**
   
   **Français (336 054 mots) :**
+  - 3 mots = **55.08 bits** ✓ Bon (défaut)
   - 4 mots = **73.43 bits** ✓ Excellent
   - 5 mots = **91.79 bits** ✓ Très sûr
   - 6 mots = **110.15 bits** ✓ Extrêmement sûr
   
   **Anglais (367 522 mots) :**
+  - 3 mots = **55.46 bits** ✓ Bon (défaut)
   - 4 mots = **73.95 bits** ✓ Excellent
   - 5 mots = **92.44 bits** ✓ Très sûr
   - 6 mots = **110.93 bits** ✓ Extrêmement sûr
   
   **Français + Anglais (703 576 mots) :**
+  - 3 mots = **58.27 bits** ✓ Très bon (défaut)
   - 4 mots = **77.69 bits** ✓ Excellent
   - 5 mots = **97.12 bits** ✓ Très sûr
   - 6 mots = **116.54 bits** ✓ Extrêmement sûr
