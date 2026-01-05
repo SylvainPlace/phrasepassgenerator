@@ -9,22 +9,27 @@ if sys.platform == 'win32':
 
 
 class PhrasePassGenerator:
-    def __init__(self, language='fr'):
-        self.language = language
-        self.words = self._load_dictionary(language)
+    def __init__(self, languages='fr'):
+        if isinstance(languages, str):
+            languages = [languages]
+        self.languages = languages
+        self.words = self._load_dictionaries(languages)
         
-    def _load_dictionary(self, language):
-        dict_path = Path(__file__).parent / 'dictionaries' / f'{language}.txt'
-        if not dict_path.exists():
-            raise FileNotFoundError(f"Dictionary file not found: {dict_path}")
+    def _load_dictionaries(self, languages):
+        all_words = []
+        for language in languages:
+            dict_path = Path(__file__).parent / 'dictionaries' / f'{language}.txt'
+            if not dict_path.exists():
+                raise FileNotFoundError(f"Dictionary file not found: {dict_path}")
+            
+            with open(dict_path, 'r', encoding='utf-8') as f:
+                words = [line.strip() for line in f if line.strip()]
+                all_words.extend(words)
         
-        with open(dict_path, 'r', encoding='utf-8') as f:
-            words = [line.strip() for line in f if line.strip()]
+        if len(all_words) < 10:
+            print(f"Warning: Dictionary contains only {len(all_words)} words. Recommended: 1000+")
         
-        if len(words) < 10:
-            print(f"Warning: Dictionary contains only {len(words)} words. Recommended: 1000+")
-        
-        return words
+        return all_words
     
     def generate(self, word_count=4, separator='-'):
         if word_count < 1:
@@ -46,9 +51,8 @@ def main():
     )
     parser.add_argument(
         '-l', '--language',
-        choices=['fr', 'en'],
         default='fr',
-        help='Dictionary language (default: fr)'
+        help='Dictionary language(s): fr, en, or "fr,en" to mix both (default: fr)'
     )
     parser.add_argument(
         '-w', '--words',
@@ -78,10 +82,17 @@ def main():
     args = parser.parse_args()
     
     try:
-        generator = PhrasePassGenerator(language=args.language)
+        languages = [lang.strip() for lang in args.language.replace(' ', ',').split(',')]
+        for lang in languages:
+            if lang not in ['fr', 'en']:
+                print(f"Error: Unknown language '{lang}'. Choose from: fr, en")
+                return 1
+        
+        generator = PhrasePassGenerator(languages=languages)
         
         if args.entropy:
             entropy = generator.get_entropy(args.words)
+            print(f"Languages: {', '.join(generator.languages)}")
             print(f"Dictionary size: {len(generator.words)} words")
             print(f"Entropy: {entropy:.2f} bits ({args.words} words)")
             print()

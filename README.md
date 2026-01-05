@@ -33,9 +33,9 @@ Génère une phrase de 4 mots en français séparés par des tirets.
 
 | Option | Description | Défaut |
 | -------- | ------------- | -------- |
-| `-l, --language` | Langue du dictionnaire (fr, en) | fr |
+| `-l, --language` | Langue(s) du dictionnaire : `fr`, `en`, ou `fr,en` pour mélanger | fr |
 | `-w, --words` | Nombre de mots | 4 |
-| `-s, --separator` | Séparateur entre les mots | - |
+| `-s, --separator` | Séparateur entre les mots (utiliser `-s ""` ou `-s` pour aucun séparateur) | - |
 | `-c, --count` | Nombre de phrases à générer | 1 |
 | `--entropy` | Afficher les informations d'entropie | False |
 
@@ -48,8 +48,14 @@ python phrasepass_generator.py -l fr -w 5
 # Générer 3 phrases en anglais avec des espaces
 python phrasepass_generator.py -l en -w 4 -s " " -c 3
 
-# Afficher l'entropie
-python phrasepass_generator.py --entropy
+# Mélanger français et anglais pour plus d'entropie
+python phrasepass_generator.py -l fr,en -w 6
+
+# Sans séparateur
+python phrasepass_generator.py -l fr -w 4 -s
+
+# Afficher l'entropie avec les deux langues
+python phrasepass_generator.py -l fr,en --entropy
 ```
 
 ## Dictionnaires
@@ -86,8 +92,14 @@ livre
   - 4 mots = **73.95 bits** ✓ Excellent
   - 5 mots = **92.44 bits** ✓ Très sûr
   - 6 mots = **110.93 bits** ✓ Extrêmement sûr
+  
+  **Français + Anglais (703 576 mots) :**
+  - 4 mots = **77.69 bits** ✓ Excellent
+  - 5 mots = **97.12 bits** ✓ Très sûr
+  - 6 mots = **116.54 bits** ✓ Extrêmement sûr
 
 - **Recommandations :**
   - Minimum 50 bits pour usage personnel
   - 70+ bits recommandé pour comptes sensibles
   - 100+ bits pour données hautement confidentielles
+  - **Mélanger les langues augmente l'entropie et la résistance aux attaques par dictionnaire**
